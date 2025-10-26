@@ -1,0 +1,334 @@
+:root {
+  --primary-color: 59 130 246;  /* Blue - rgb(59, 130, 246) */
+  --secondary-color: 139 92 246; /* Purple - rgb(139, 92, 246) */
+  --accent-color: 34 211 238;    /* Cyan - rgb(34, 211, 238) */
+}
+
+.sci-fi-screen-wrapper {
+  position: relative;
+  width: 320px;
+  aspect-ratio: 320 / 520;
+  box-shadow: 20px 20px 0 rgb(var(--primary-color) / 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.sci-fi-screen-wrapper:hover {
+  box-shadow: 25px 25px 0 rgb(var(--primary-color) / 0.5);
+}
+
+.sci-fi-screen {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 304px;
+  height: 494px;
+  border-radius: 1rem;
+  background-color: rgb(var(--primary-color));
+  aspect-ratio: 320 / 520;
+  grid-row-start: 1;
+  grid-column-start: 1;
+  --stack-height: calc(100% / var(--stacks) - 1px);
+  --inverse-index: calc(calc(var(--stacks) - 1) - var(--index));
+  --clip-top: calc(var(--stack-height) * var(--index));
+  --clip-bottom: calc(var(--stack-height) * var(--inverse-index));
+  clip-path: inset(var(--clip-top) -10px var(--clip-bottom) -10px);
+}
+
+.sci-fi-screen-internal {
+  position: relative;
+  top: 2px;
+  left: 2px;
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-start: 1;
+  grid-column-start: 1;
+  background-color: rgb(15 23 42);  /* slate-900 */
+  border-radius: 1rem;
+}
+
+.sci-fi-screen:nth-child(odd) {
+  --glitch-translate: 8px;
+  animation: container-glitch-enter-1 220ms cubic-bezier(.46, .29, 0, 1.24) 1 backwards calc(var(--index) * 120ms),
+             container-glitch-1 2s ease infinite 2s alternate-reverse;
+}
+
+.sci-fi-screen:nth-child(even) {
+  --glitch-translate: -8px;
+  animation: container-glitch-enter-2 220ms cubic-bezier(.46, .29, 0, 1.24) 1 backwards calc(var(--index) * 120ms),
+             container-glitch-2 2s ease infinite 2s alternate-reverse;
+}
+
+.sci-fi-screen:first-child {
+  clip-path: polygon(0 0, calc(50% - 64px) 0, calc(50% - 54px) 8px, 50% 8px, calc(50% + 54px) 8px,
+              calc(50% + 64px) 0, 100% 0, 100% calc(var(--stack-height) + 1px), 0 calc(var(--stack-height) + 1px), 0 0);
+}
+
+.sci-fi-screen:first-child > .sci-fi-screen-internal {
+  clip-path: polygon(0 0, calc(50% - 66px) 0, calc(50% - 56px) 8px, 50% 8px, calc(50% + 56px) 8px,
+              calc(50% + 66px) 0, 100% 0, 100% var(--stack-height), 0 var(--stack-height), 0 0);
+}
+
+.sci-fi-screen:last-child {
+  clip-path: polygon(0 var(--clip-top), 0 100%, calc(50% - 64px) 100%, calc(50% - 54px) calc(100% - 8px),
+              50% calc(100% - 8px), calc(50% + 54px) calc(100% - 8px), calc(50% + 64px) 100%, 100% 100%, 100% var(--clip-top));
+}
+
+.sci-fi-screen:last-child > .sci-fi-screen-internal {
+  clip-path: polygon(0 var(--clip-top), 0 100%, calc(50% - 66px) 100%, calc(50% - 56px) calc(100% - 8px),
+              50% calc(100% - 8px), calc(50% + 56px) calc(100% - 8px), calc(50% + 66px) 100%, 100% 100%, 100% var(--clip-top));
+}
+
+@keyframes container-glitch-enter-1 {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+    box-shadow: -2px 3px 0 red, 2px -3px 0 blue;
+  }
+  60% {
+    opacity: 0.5;
+    transform: translateX(50%);
+  }
+  80% {
+    transform: none;
+    opacity: 1;
+    box-shadow: 2px -3px 0 red, -2px 3px 0 blue;
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+@keyframes container-glitch-enter-2 {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+    box-shadow: -2px 3px 0 rgb(var(--accent-color)), 2px -3px 0 rgb(var(--secondary-color));
+  }
+  60% {
+    opacity: 0.5;
+    transform: translateX(50%);
+  }
+  80% {
+    transform: none;
+    opacity: 1;
+    box-shadow: -2px 3px 0 rgb(var(--accent-color)), 2px -3px 0 rgb(var(--secondary-color));
+  }
+  100% {
+    box-shadow: none;
+  }
+}
+
+@keyframes container-glitch-1 {
+  0% {
+    box-shadow: -2px 3px 0 red, 2px -3px 0 blue;
+    transform: translate(var(--glitch-translate));
+  }
+  1% {
+    box-shadow: 2px -3px 0 red, -2px 3px 0 blue;
+  }
+  2%, 100% {
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+@keyframes container-glitch-2 {
+  0% {
+    box-shadow: -2px 3px 0 rgb(var(--accent-color)), 2px -3px 0 rgb(var(--secondary-color));
+    transform: translate(var(--glitch-translate));
+  }
+  1% {
+    box-shadow: 2px -3px 0 rgb(var(--accent-color)), -2px 3px 0 rgb(var(--secondary-color));
+  }
+  2%, 100% {
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+.sci-fi-screen-image {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0px;
+  top: 0px;
+  border-radius: 0.8rem;
+  background-size: 300%;
+  background-position: 0% 0%;
+  filter: sepia(100%) hue-rotate(200deg) brightness(0.3);
+  opacity: 0.4;
+  background-image: linear-gradient(135deg, rgb(var(--primary-color) / 0.1) 0%, rgb(var(--secondary-color) / 0.1) 100%);
+  animation: pan-image 20s linear infinite;
+}
+
+@keyframes pan-image {
+  0% {
+    background-position: 0% 0%;
+    background-size: 300%;
+  }
+  50% {
+    background-position: 100% 100%;
+    background-size: 400%;
+  }
+  100% {
+    background-position: 0% 0%;
+    background-size: 300%;
+  }
+}
+
+.sci-fi-screen-overlay {
+  border-radius: 1rem;
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  background-image: linear-gradient(
+    rgb(var(--primary-color) / 0.08),
+    rgb(var(--primary-color) / 0.08) 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  background-size: 100% 4px;
+  height: 100%;
+  width: 100%;
+  animation: pan-overlay 32s infinite linear;
+}
+
+@keyframes pan-overlay {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% -100%;
+  }
+}
+
+.sci-fi-screen-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  margin: 10px;
+  padding: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-width: 280px;
+  border-radius: 0.8rem;
+  color: rgb(248 250 252);  /* slate-50 */
+  font-size: 1rem;
+  border: 1px solid rgb(var(--primary-color) / 0.3);
+}
+
+.sci-fi-screen-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sci-fi-screen-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sci-fi-screen-content::-webkit-scrollbar-thumb {
+  background: rgb(var(--primary-color) / 0.3);
+  border-radius: 3px;
+}
+
+.sci-fi-screen-content::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--primary-color) / 0.5);
+}
+
+.sci-fi-screen-title-wrapper {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  border-radius: 1rem;
+  transition: 0.2s;
+}
+
+.sci-fi-screen-title-wrapper > svg {
+  position: absolute;
+  margin: 8px;
+  padding-top: 4px;
+  height: 54px;
+  fill: none;
+  stroke: rgb(var(--primary-color) / 0.2);
+  stroke-width: 2px;
+  border-radius: 1rem;
+}
+
+.sci-fi-screen-title-wrapper > svg:first-child {
+  left: 8px;
+}
+
+.sci-fi-screen-title-wrapper > svg:last-child {
+  right: 8px;
+}
+
+.sci-fi-screen-title-wrapper span {
+  font-weight: bold;
+  grid-row-start: 1;
+  grid-column-start: 1;
+  text-align: center;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  --stack-height: calc(100% / var(--stacks) - 1px);
+  --inverse-index: calc(calc(var(--stacks) - 1) - var(--index));
+  --clip-top: calc(var(--stack-height) * var(--index));
+  --clip-bottom: calc(var(--stack-height) * var(--inverse-index));
+  clip-path: inset(var(--clip-top) 0 var(--clip-bottom) 0);
+  animation: sci-fi-screen-title-intro 340ms cubic-bezier(.46, .29, 0, 1.24) 1 backwards calc(var(--index) * 120ms),
+             sci-fi-screen-title-glitch 2s ease infinite 2s alternate-reverse;
+}
+
+.sci-fi-screen-title-wrapper span:nth-child(odd) {
+  --glitch-translate: 8px;
+}
+
+.sci-fi-screen-title-wrapper span:nth-child(even) {
+  --glitch-translate: -8px;
+}
+
+@keyframes sci-fi-screen-title-intro {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+    text-shadow: -2px 3px 0 red, 2px -3px 0 blue;
+  }
+  60% {
+    opacity: 0.5;
+    transform: translateX(50%);
+  }
+  80% {
+    transform: none;
+    opacity: 1;
+    text-shadow: 2px -3px 0 red, -2px 3px 0 blue;
+  }
+  100% {
+    text-shadow: none;
+  }
+}
+
+@keyframes sci-fi-screen-title-glitch {
+  0% {
+    text-shadow: -2px 3px 0 red, 2px -3px 0 blue;
+    transform: translate(var(--glitch-translate));
+  }
+  1% {
+    text-shadow: 2px -3px 0 red, -2px 3px 0 blue;
+  }
+  2%, 100% {
+    text-shadow: none;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sci-fi-screen,
+  .sci-fi-screen-title-wrapper span,
+  .sci-fi-screen-image,
+  .sci-fi-screen-overlay {
+    animation: none !important;
+  }
+}

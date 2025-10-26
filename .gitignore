@@ -38,3 +38,14 @@ out/
 
 ### Kotlin ###
 .kotlin
+
+### UI / Next.js ###
+ui/**/node_modules/
+ui/**/.next/
+ui/**/out/
+ui/**/.turbo/
+ui/**/next-env.d.ts
+ui/**/.vercel
+
+### File uploads ###
+uploads/
